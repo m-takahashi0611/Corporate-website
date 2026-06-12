@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://self-consulting.co.jp/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://self-consulting.co.jp/service/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://self-consulting.co.jp/works/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://self-consulting.co.jp/company/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://self-consulting.co.jp/blog/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://self-consulting.co.jp/contact/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://self-consulting.co.jp/blog/offshore-development-future/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2025-06-15</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/construction-dx-success-cases/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2025-06-28</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/matching-app-development-guide/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2025-07-15</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/inventory-management-system-limits/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2025-08-20</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/internal-inquiry-ai-automation/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2025-09-15</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/backlog-ai-project-summary/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2025-10-10</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/line-ai-personalized-reservation/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2025-11-15</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/slack-chatgpt-secure-helpdesk/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2025-12-10</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/line-gemini-image-support/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-01-10</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/jira-ai-automated-ticketing/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-01-25</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/line-claude-manual-search/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-02-10</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/line-chatgpt-support-automation/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-02-25</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/line-claude-contract-analysis/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-10</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/coto-coto-development-story/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-03-24</lastmod></url>
+  <url><loc>https://self-consulting.co.jp/blog/line-gemini-document-search/</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2026-04-10</lastmod></url>
+</urlset>
