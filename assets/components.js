@@ -3,6 +3,7 @@
 const SITE_NAME = 'SELF-CONSULTING';
 
 const NAV_ITEMS = [
+  { href: '/', label: 'TOP' },
   { href: '/service/', label: 'サービス' },
   { href: '/works/', label: '開発実績' },
   { href: '/company/', label: '会社概要' },
@@ -14,7 +15,7 @@ function renderHeader() {
   const logoSrc = '/images/logo.png';
 
   const navLinks = NAV_ITEMS.map(item => {
-    const isActive = current.startsWith(item.href) && item.href !== '/';
+    const isActive = item.href === '/' ? current === '/' : current.startsWith(item.href);
     return `<a href="${item.href}" class="nav-link${isActive ? ' active' : ''}">${item.label}</a>`;
   }).join('');
 
