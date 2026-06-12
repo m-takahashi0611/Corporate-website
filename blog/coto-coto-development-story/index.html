@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【開発事例】LINE連携×ChatGPTで献立提案AIアプリ「coto coto」を開発した裏側 | SELF-CONSULTING Blog</title>
+  <meta name="description" content="毎日の「今日のご飯、何にしよう？」という悩みを解決するLINEボット「coto coto」。冷蔵庫の余り物をLINEで送るだけで、AIが最適なレシピを提案するこのアプリが、どのようにして生まれ、開発されたのか。その裏側を公開します。">
+  <meta name="keywords" content="開発事例, LINE連携, ChatGPT, coto coto, アプリ開発, B2C, レシピ提案">
+  <meta property="og:title" content="【開発事例】LINE連携×ChatGPTで献立提案AIアプリ「coto coto」を開発した裏側">
+  <meta property="og:description" content="毎日の「今日のご飯、何にしよう？」という悩みを解決するLINEボット「coto coto」。冷蔵庫の余り物をLINEで送るだけで、AIが最適なレシピを提案するこのアプリが、どのようにして生まれ、開発されたのか。その裏側を公開します。">
+  <meta property="og:url" content="https://self-consulting.co.jp/blog/coto-coto-development-story/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://self-consulting.co.jp/images/blog-header-bright.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://self-consulting.co.jp/blog/coto-coto-development-story/">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "【開発事例】LINE連携×ChatGPTで献立提案AIアプリ「coto coto」を開発した裏側",
+    "description": "毎日の「今日のご飯、何にしよう？」という悩みを解決するLINEボット「coto coto」。冷蔵庫の余り物をLINEで送るだけで、AIが最適なレシピを提案するこのアプリが、どのようにして生まれ、開発されたのか。その裏側を公開します。",
+    "datePublished": "2026-03-24",
+    "author": {"@type":"Organization","name":"SELF-CONSULTING"},
+    "image": "https://self-consulting.co.jp/images/blog-header-bright.jpg",
+    "url": "https://self-consulting.co.jp/blog/coto-coto-development-story/"
+  }
+  </script>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<!-- Article Header -->
+<section style="padding-top:88px;background:linear-gradient(135deg,#001a33,#003366);position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(197,160,89,0.2) 0%,transparent 60%);pointer-events:none;"></div>
+  <div class="container" style="padding-top:48px;padding-bottom:0;position:relative;z-index:10;">
+    <div style="max-width:800px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <span class="category-badge" style="background:rgba(197,160,89,0.2);color:#C5A059;">Development</span>
+        <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);">2026-03-24</span>
+        <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);">· 5 min read</span>
+      </div>
+      <h1 style="font-family:Roboto,sans-serif;font-weight:900;font-size:clamp(1.5rem,3vw,2.25rem);color:#fff;line-height:1.3;margin-bottom:20px;">【開発事例】LINE連携×ChatGPTで献立提案AIアプリ「coto coto」を開発した裏側</h1>
+      <p style="color:rgba(255,255,255,0.7);line-height:1.8;font-size:1rem;padding-bottom:40px;">毎日の「今日のご飯、何にしよう？」という悩みを解決するLINEボット「coto coto」。冷蔵庫の余り物をLINEで送るだけで、AIが最適なレシピを提案するこのアプリが、どのようにして生まれ、開発されたのか。その裏側を公開します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Image -->
+<div style="background:#f9fafb;">
+  <div class="container" style="padding:0;">
+    <img src="/images/blog-header-bright.jpg" alt="【開発事例】LINE連携×ChatGPTで献立提案AIアプリ「coto coto」を開発した裏側" style="width:100%;max-height:480px;object-fit:cover;display:block;">
+  </div>
+</div>
+
+<!-- Article Body -->
+<section style="padding:60px 0;background:#fff;">
+  <div class="container" style="max-width:820px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:60px;align-items:start;">
+      <article class="article-body">
+        
+<h2>「毎日の献立を考えるのが苦痛」というリアルな課題</h2>
+
+<p>「今日のご飯、何にしよう？」</p>
+<p>これは、自炊をする多くの人が毎日直面する、小さくも重いストレスです。</p>
+
+<ul>
+<li>冷蔵庫にある中途半端な余り物（半分残ったキャベツ、少しだけある豚肉など）をどう消費すればいいかわからない。</li>
+<li>レシピサイトで検索しても、手元にない調味料が必要だったり、工程が複雑すぎたりして結局作れない。</li>
+<li>毎日同じようなメニューのローテーションになってしまい、家族から飽きられる。</li>
+</ul>
+
+<p>この「名もなき家事」の負担を、テクノロジーの力で少しでも軽くできないか？</p>
+<p>そんな思いから、献立提案AIアプリ「coto coto（コトコト）」の開発プロジェクトはスタートしました。</p>
+
+<p>&lt;img src="/images/blog-header-clean.jpg" alt="毎日の献立を考えるのが苦痛" className="w-full rounded-lg my-8 object-cover" /&gt;</p>
+
+<h2>なぜ「LINE × ChatGPT」を選んだのか？</h2>
+
+<p>開発にあたり、私たちは「ユーザーにとって最もハードルが低い体験」を追求しました。</p>
+
+<p>専用のネイティブアプリ（iOS/Android）を開発する選択肢もありましたが、アプリのダウンロードや会員登録はユーザーにとって大きな障壁となります。そこで、日本のスマホユーザーのインフラとなっている<strong>「LINE」</strong>をインターフェースとして採用しました。LINEの公式アカウントを友だち追加するだけで、すぐに使い始めることができます。</p>
+
+<p>そして、献立を考える頭脳として採用したのが<strong>「ChatGPT（OpenAI API）」</strong>です。</p>
+<p>単なるキーワード検索ではなく、「キャベツと豚肉がある。子供が喜ぶ、15分で作れる簡単なレシピを教えて」といった、ユーザーの複雑で曖昧な要望（自然言語）を理解し、柔軟にレシピを生成できるのは、大規模言語モデル（LLM）ならではの強みです。</p>
+
+<p>&lt;img src="/images/blog-header-bright.jpg" alt="LINE × ChatGPT" className="w-full rounded-lg my-8 object-cover" /&gt;</p>
+
+<h2>開発の裏側：AIを「優秀な料理アシスタント」に育てるプロンプトエンジニアリング</h2>
+
+<p>開発において最も苦労し、同時に最もこだわったのが、ChatGPTに対する「プロンプト（指示文）のチューニング」です。</p>
+
+<p>初期のテスト段階では、AIが「キャビア」や「トリュフ」といった一般的な家庭にはない高級食材を使ったレシピを提案してきたり、調理工程がプロのフレンチシェフ並みに複雑だったりする問題が発生しました。</p>
+
+<p>これを解決するため、私たちはAIに対して以下のような厳格な制約（システムプロンプト）を与え、何度もテストと調整を繰り返しました。</p>
+
+<ul>
+<li><strong>ペルソナ設定</strong>：「あなたは、忙しい主婦（主夫）の味方である、親しみやすく優秀な料理アシスタントです。」</li>
+<li><strong>食材の制約</strong>：「提案するレシピは、日本の一般的なスーパーで手に入る食材と調味料のみを使用してください。」</li>
+<li><strong>手間の制約</strong>：「調理時間は最大でも30分以内とし、工程は可能な限りシンプルにしてください。」</li>
+<li><strong>出力フォーマットの固定</strong>：「料理名、必要な材料リスト、調理手順（箇条書き）の順で、見やすく出力してください。」</li>
+</ul>
+
+<p>この緻密なプロンプトエンジニアリングにより、coto cotoは「本当に家庭で作れる、実用的なレシピ」を安定して提案できるようになりました。</p>
+
+<p>&lt;img src="/images/blog-ai-code-review.jpg" alt="プロンプトエンジニアリング" className="w-full rounded-lg my-8 object-cover" /&gt;</p>
+
+<h2>リリース後の反響と今後の展望</h2>
+
+<p>coto cotoをリリース後、SNSなどを通じて口コミが広がり、多くのユーザーにご利用いただいています。</p>
+
+<p>「冷蔵庫の余り物を入力するだけで、思いつかなかった美味しいレシピを教えてくれて助かる」「毎日の献立のマンネリが解消された」といった嬉しいお声を多数いただいており、開発チーム一同、大きなやりがいを感じています。</p>
+
+<p>今後は、ユーザーの好みの味付け（薄味、辛めなど）を学習してよりパーソナライズされた提案を行う機能や、提案したレシピに必要な食材をネットスーパーと連携してそのまま注文できる機能など、さらなる利便性の向上を目指してアップデートを続けていく予定です。</p>
+
+<p>SELF-CONSULTINGでは、このような自社サービスの開発で培った「LINE連携」と「生成AI活用」のノウハウを活かし、お客様のビジネス課題を解決する最適なソリューションを提供してまいります。</p>
+
+
+      </article>
+      <!-- Sidebar -->
+      <aside style="width:260px;position:sticky;top:100px;">
+        <div style="background:#f9fafb;border-radius:16px;padding:24px;border:1px solid #e5e7eb;margin-bottom:24px;">
+          <h3 style="font-size:0.875rem;font-weight:700;color:#003366;margin-bottom:16px;">この記事を書いた会社</h3>
+          <img src="/images/logo.png" alt="SELF-CONSULTING" style="height:32px;width:auto;margin-bottom:12px;display:block;">
+          <p style="font-size:0.8rem;color:#6b7280;line-height:1.7;">AI技術とベトナムオフショア開発を融合させ、企業のDXを強力にサポートします。</p>
+          <a href="/contact/" class="btn-primary" style="display:block;text-align:center;margin-top:16px;font-size:0.875rem;padding:10px;">無料相談はこちら</a>
+        </div>
+        <div style="background:#fff3cd;border-radius:16px;padding:24px;border:1px solid #ffd666;">
+          <h3 style="font-size:0.875rem;font-weight:700;color:#003366;margin-bottom:8px;">関連サービス</h3>
+          <a href="/service/" style="display:flex;align-items:center;gap:8px;color:#C5A059;font-size:0.875rem;font-weight:600;text-decoration:none;margin-top:10px;">→ サービス一覧を見る</a>
+          <a href="/works/" style="display:flex;align-items:center;gap:8px;color:#C5A059;font-size:0.875rem;font-weight:600;text-decoration:none;margin-top:8px;">→ 開発実績を見る</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Keywords -->
+
+<section style="padding:24px 0;background:#f9fafb;border-top:1px solid #e5e7eb;">
+  <div class="container" style="max-width:820px;">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+      <span style="font-size:0.8rem;color:#9ca3af;">タグ:</span>
+      <span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">開発事例</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">LINE連携</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">ChatGPT</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">coto coto</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">アプリ開発</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">B2C</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">レシピ提案</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- Back to blog -->
+<section style="padding:40px 0;background:#fff;">
+  <div class="container" style="max-width:820px;">
+    <a href="/blog/" style="display:inline-flex;align-items:center;gap:8px;color:#003366;font-weight:600;text-decoration:none;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      ブログ一覧に戻る
+    </a>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" style="padding:60px 0;">
+  <div class="container" style="text-align:center;">
+    <h2 style="font-family:Roboto,sans-serif;font-weight:900;font-size:clamp(1.25rem,2.5vw,2rem);color:#fff;margin-bottom:12px;">まずは、あなたの課題をお聞かせください。</h2>
+    <a href="/contact/" class="btn-primary" style="margin-top:16px;font-size:1rem;padding:14px 32px;">無料相談を申し込む</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="/assets/components.js"></script>
+</body>
+</html>
