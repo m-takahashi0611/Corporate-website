@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【B2B】Jira × AIでバグ報告からチケット起票までを完全自動化（情報漏洩を防ぐ運用設計） | SELF-CONSULTING Blog</title>
+  <meta name="description" content="開発現場で日々発生するバグ報告。Slackなどのチャットツールに散在する報告をAIが自動で解析し、Jiraのチケットとして適切なフォーマットで起票する仕組みを解説。ソースコードなどの機密情報を守るセキュリティ対策も必見です。">
+  <meta name="keywords" content="Jira, AI連携, バグ報告, チケット起票, 自動化, アジャイル開発, セキュリティ">
+  <meta property="og:title" content="【B2B】Jira × AIでバグ報告からチケット起票までを完全自動化（情報漏洩を防ぐ運用設計）">
+  <meta property="og:description" content="開発現場で日々発生するバグ報告。Slackなどのチャットツールに散在する報告をAIが自動で解析し、Jiraのチケットとして適切なフォーマットで起票する仕組みを解説。ソースコードなどの機密情報を守るセキュリティ対策も必見です。">
+  <meta property="og:url" content="https://self-consulting.co.jp/blog/jira-ai-automated-ticketing/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://self-consulting.co.jp/images/blog-jira-ai-h2-1.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://self-consulting.co.jp/blog/jira-ai-automated-ticketing/">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "【B2B】Jira × AIでバグ報告からチケット起票までを完全自動化（情報漏洩を防ぐ運用設計）",
+    "description": "開発現場で日々発生するバグ報告。Slackなどのチャットツールに散在する報告をAIが自動で解析し、Jiraのチケットとして適切なフォーマットで起票する仕組みを解説。ソースコードなどの機密情報を守るセキュリティ対策も必見です。",
+    "datePublished": "2026-01-25",
+    "author": {"@type":"Organization","name":"SELF-CONSULTING"},
+    "image": "https://self-consulting.co.jp/images/blog-jira-ai-h2-1.jpg",
+    "url": "https://self-consulting.co.jp/blog/jira-ai-automated-ticketing/"
+  }
+  </script>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<!-- Article Header -->
+<section style="padding-top:88px;background:linear-gradient(135deg,#001a33,#003366);position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(197,160,89,0.2) 0%,transparent 60%);pointer-events:none;"></div>
+  <div class="container" style="padding-top:48px;padding-bottom:0;position:relative;z-index:10;">
+    <div style="max-width:800px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <span class="category-badge" style="background:rgba(197,160,89,0.2);color:#C5A059;">Development</span>
+        <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);">2026-01-25</span>
+        <span style="font-size:0.875rem;color:rgba(255,255,255,0.5);">· 8 min read</span>
+      </div>
+      <h1 style="font-family:Roboto,sans-serif;font-weight:900;font-size:clamp(1.5rem,3vw,2.25rem);color:#fff;line-height:1.3;margin-bottom:20px;">【B2B】Jira × AIでバグ報告からチケット起票までを完全自動化（情報漏洩を防ぐ運用設計）</h1>
+      <p style="color:rgba(255,255,255,0.7);line-height:1.8;font-size:1rem;padding-bottom:40px;">開発現場で日々発生するバグ報告。Slackなどのチャットツールに散在する報告をAIが自動で解析し、Jiraのチケットとして適切なフォーマットで起票する仕組みを解説。ソースコードなどの機密情報を守るセキュリティ対策も必見です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Image -->
+<div style="background:#f9fafb;">
+  <div class="container" style="padding:0;">
+    <img src="/images/blog-jira-ai-h2-1.jpg" alt="【B2B】Jira × AIでバグ報告からチケット起票までを完全自動化（情報漏洩を防ぐ運用設計）" style="width:100%;max-height:480px;object-fit:cover;display:block;">
+  </div>
+</div>
+
+<!-- Article Body -->
+<section style="padding:60px 0;background:#fff;">
+  <div class="container" style="max-width:820px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:60px;align-items:start;">
+      <article class="article-body">
+        
+<h2>開発スピードを落とす「バグ報告のノイズ」</h2>
+<img src="/images/blog-jira-ai-h2-1.jpg" alt="開発スピードを落とす「バグ報告のノイズ」" style="width:100%;border-radius:12px;margin:16px 0 24px;">
+
+<p>アジャイル開発の現場において、テスト担当者やビジネスサイドからの「バグ報告」は日常茶飯事です。しかし、その報告フローが整備されていないと、開発チームの生産性は著しく低下します。</p>
+
+<p>よくある開発現場の惨状：</p>
+<ul>
+<li><strong>Slackに散在する報告</strong>：「〇〇の画面でエラーが出ました！」という曖昧な報告がSlackの様々なチャンネルに飛び交い、情報が流れて消えていく。</li>
+<li><strong>再現手順が不明</strong>：OSやブラウザのバージョン、エラーを再現するための具体的な手順が書かれておらず、エンジニアが調査に無駄な時間を費やす。</li>
+<li><strong>チケット起票の二度手間</strong>：エンジニアやQA担当者が、Slackの報告を読み解き、手作業でJiraなどの課題管理ツールにチケット（課題）として転記・起票しなければならない。</li>
+</ul>
+
+<p>&lt;img src="/images/blog-jira-ai-h2-1.jpg" alt="バグ報告の課題" className="w-full rounded-lg my-8 object-cover" /&gt;</p>
+
+<h2>Jira × AI連携による「チケット起票の完全自動化」</h2>
+<img src="/images/blog-jira-ai-h2-2.jpg" alt="Jira × AI連携による「チケット起票の完全自動化」" style="width:100%;border-radius:12px;margin:16px 0 24px;">
+
+<p>この非効率なプロセスを、JiraとAI（ChatGPTやClaudeなど）の連携によって完全に自動化します。</p>
+
+<h3>自動化のフロー</h3>
+
+<ul>
+<li> <strong>Slackの専用チャンネルに報告</strong>：報告者は、専用のSlackチャンネル（例：<code>#bug-reports</code>）に、エラー画面のスクリーンショットや気づいたことを自由に投稿します。</li>
+<li> <strong>AIによる情報の抽出と整形</strong>：裏側でAIが投稿内容（テキストと画像）を解析します。「発生箇所」「エラー内容」「推測される原因」を抽出し、Jiraのチケットフォーマットに合わせて構造化されたテキストに変換します。</li>
+<li> <strong>Jiraへの自動起票</strong>：AIがJiraのAPIを叩き、適切なプロジェクト、コンポーネント、優先度を設定した上で、自動的にバグチケットを起票します。</li>
+<li> <strong>不足情報の自動ヒアリング</strong>：もし報告内容に「再現手順」や「環境情報」が不足している場合、AIがSlack上で報告者に対して「ブラウザの種類を教えてください」と自動でヒアリングを行います。</li>
+</ul>
+
+<p>&lt;img src="/images/blog-jira-ai-h2-2.jpg" alt="AIによる自動起票フロー" className="w-full rounded-lg my-8 object-cover" /&gt;</p>
+
+<h2>開発現場における「情報漏洩」を防ぐセキュリティ設計</h2>
+<img src="/images/blog-jira-ai-h2-3.jpg" alt="開発現場における「情報漏洩」を防ぐセキュリティ設計" style="width:100%;border-radius:12px;margin:16px 0 24px;">
+
+<p>開発ツールであるJiraやSlackには、未公開のソースコード、APIキー、顧客のテストデータなど、企業の心臓部とも言える機密情報が大量に含まれています。そのため、AI連携においては極めて厳格なセキュリティ設計が求められます。</p>
+
+<h3>1. ソースコード・クレデンシャルの検知と除外</h3>
+<p>AIにデータを渡す前に、正規表現や専用のセキュリティツールを用いて、テキスト内にソースコードの断片やAPIキー、パスワード（クレデンシャル情報）が含まれていないかをスキャンします。検知された場合は、その部分を削除またはマスキングしてからAIに処理させます。</p>
+
+<h3>2. クローズドなネットワーク環境でのAI実行</h3>
+<p>パブリックなインターネットを経由せず、AWSやAzureなどの自社クラウド環境内に閉じたネットワーク（VPCなど）から、プライベートエンドポイント経由でAIモデル（Azure OpenAI Serviceなど）にアクセスする構成をとります。これにより、通信経路でのデータ傍受リスクを最小化します。</p>
+
+<h3>3. 厳格なアクセス制御（RBAC）</h3>
+<p>AIがJiraにアクセスするためのAPIトークンは、必要最小限の権限（バグチケットの作成のみ）に絞り込みます。万が一トークンが漏洩しても、他のプロジェクトの閲覧やデータの削除ができないように制御します。</p>
+
+<p>&lt;img src="/images/blog-jira-ai-h2-3.jpg" alt="開発現場のセキュリティ設計" className="w-full rounded-lg my-8 object-cover" /&gt;</p>
+
+<h2>まとめ：エンジニアを「コードを書くこと」に集中させる</h2>
+
+<p>バグ報告からチケット起票までのプロセスをAIで自動化することで、エンジニアは「報告の解読」や「転記作業」というノイズから解放され、本来の価値を生み出す「コードを書くこと（バグの修正や新機能の開発）」に100%集中できるようになります。</p>
+
+<p>SELF-CONSULTINGでは、開発現場のワークフローを深く理解し、セキュアで実用的なAI連携システムを構築します。</p>
+
+
+      </article>
+      <!-- Sidebar -->
+      <aside style="width:260px;position:sticky;top:100px;">
+        <div style="background:#f9fafb;border-radius:16px;padding:24px;border:1px solid #e5e7eb;margin-bottom:24px;">
+          <h3 style="font-size:0.875rem;font-weight:700;color:#003366;margin-bottom:16px;">この記事を書いた会社</h3>
+          <img src="/images/logo.png" alt="SELF-CONSULTING" style="height:32px;width:auto;margin-bottom:12px;display:block;">
+          <p style="font-size:0.8rem;color:#6b7280;line-height:1.7;">AI技術とベトナムオフショア開発を融合させ、企業のDXを強力にサポートします。</p>
+          <a href="/contact/" class="btn-primary" style="display:block;text-align:center;margin-top:16px;font-size:0.875rem;padding:10px;">無料相談はこちら</a>
+        </div>
+        <div style="background:#fff3cd;border-radius:16px;padding:24px;border:1px solid #ffd666;">
+          <h3 style="font-size:0.875rem;font-weight:700;color:#003366;margin-bottom:8px;">関連サービス</h3>
+          <a href="/service/" style="display:flex;align-items:center;gap:8px;color:#C5A059;font-size:0.875rem;font-weight:600;text-decoration:none;margin-top:10px;">→ サービス一覧を見る</a>
+          <a href="/works/" style="display:flex;align-items:center;gap:8px;color:#C5A059;font-size:0.875rem;font-weight:600;text-decoration:none;margin-top:8px;">→ 開発実績を見る</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Keywords -->
+
+<section style="padding:24px 0;background:#f9fafb;border-top:1px solid #e5e7eb;">
+  <div class="container" style="max-width:820px;">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+      <span style="font-size:0.8rem;color:#9ca3af;">タグ:</span>
+      <span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">Jira</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">AI連携</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">バグ報告</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">チケット起票</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">自動化</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">アジャイル開発</span><span style="background:#e0f0ff;color:#003366;font-size:0.8rem;padding:4px 12px;border-radius:20px;">セキュリティ</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- Back to blog -->
+<section style="padding:40px 0;background:#fff;">
+  <div class="container" style="max-width:820px;">
+    <a href="/blog/" style="display:inline-flex;align-items:center;gap:8px;color:#003366;font-weight:600;text-decoration:none;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      ブログ一覧に戻る
+    </a>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" style="padding:60px 0;">
+  <div class="container" style="text-align:center;">
+    <h2 style="font-family:Roboto,sans-serif;font-weight:900;font-size:clamp(1.25rem,2.5vw,2rem);color:#fff;margin-bottom:12px;">まずは、あなたの課題をお聞かせください。</h2>
+    <a href="/contact/" class="btn-primary" style="margin-top:16px;font-size:1rem;padding:14px 32px;">無料相談を申し込む</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="/assets/components.js"></script>
+</body>
+</html>
